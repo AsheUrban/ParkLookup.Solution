@@ -7,6 +7,5 @@ namespace ParkLookup.Models
         public string Type { get; set; }
         public string Location { get; set; }
         public string Feature { get; set; }
-        public string Activity { get; set; }
     }
 }

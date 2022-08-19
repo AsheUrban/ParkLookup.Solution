@@ -11,16 +11,16 @@ namespace ParkLookup.Models
 
         public DbSet<Park> Parks { get; set; }
 
-        // protected override void OnModelCreating(ModelBuilder builder)
-        // {
-        // builder.Entity<Animal>()
-        //     .HasData(
-        //         new Animal { AnimalId = 1, Name = "Matilda", Species = "Woolly Mammoth", Age = 7, Gender = "Female" },
-        //         new Animal { AnimalId = 2, Name = "Rexie", Species = "Dinosaur", Age = 10, Gender = "Female" },
-        //         new Animal { AnimalId = 3, Name = "Matilda", Species = "Dinosaur", Age = 2, Gender = "Female" },
-        //         new Animal { AnimalId = 4, Name = "Pip", Species = "Shark", Age = 4, Gender = "Male" },
-        //         new Animal { AnimalId = 5, Name = "Bartholomew", Species = "Dinosaur", Age = 22, Gender = "Male" }
-        //     );
-        // }
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+        builder.Entity<Park>()
+            .HasData(
+                new Park { ParkId = 1, Name = "Crater Lake", Type = "National Park", Location = "Oregon", Feature = "Deepest and Clearest lake in USA." },
+                new Park { ParkId = 2, Name = "Lassen Volcanic", Type = "National Park", Location = "California", Feature = "Lakes, hot springs, cincer cones, and lava beds." },
+                new Park { ParkId = 3, Name = "Denali", Type = "National Park and Preserve", Location = "Alaska", Feature = "Tallest peak in North America and over 6 million acres of wilderness." },
+                new Park { ParkId = 4, Name = "Smith Rock", Type = "State Park", Location = "Oregon", Feature = "Sweeping views and several thousand climbs, with over a thousand bolted routes." },
+                new Park { ParkId = 5, Name = "Ponderosa", Type = "State Park", Location = "Idaho", Feature = "Camp, fish, run, climb, bike, boat, ride horses, sail, and more at this lively recreational destination." }
+            );
+        }
     }
 }
