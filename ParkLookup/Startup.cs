@@ -31,11 +31,29 @@ namespace ParkLookup
             services.AddDbContext<ParkLookupContext>(opt =>
                 opt.UseMySql(Configuration["ConnectionStrings:DefaultConnection"], ServerVersion.AutoDetect(Configuration["ConnectionStrings:DefaultConnection"])));
             services.AddControllers();
-            services.AddSwaggerGen(c => 
+            services.AddSwaggerGen(options => 
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ParkLookup", Version = "v1"});
+                options.SwaggerDoc("v1", new OpenApiInfo 
+                {
+                 Version = "v1",
+                    Title = "ParkLookup Api",
+                    Description = "An ASP.NET Core Web API for displaying facts about State and National Parks around the Pacific Northwest",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Ashe Urban",
+                        Url = new Uri("https://github.com/AsheUrban")
+                    },
+                    License = new OpenApiLicense
+                    {
+                        Name = "MIT License",
+                        Url = new Uri("https://github.com/lcmpbll/Cretaceous22Park.Solution/blob/main/LICENSE")
+                    }  
+                });
+                var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
             });
         }
+      
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

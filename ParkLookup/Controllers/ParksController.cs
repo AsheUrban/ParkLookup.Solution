@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ParkLookup.Models;
-using Microsoft.Extensions.Logging;
 
 namespace ParkLookup.Controllers
 {
@@ -19,6 +18,19 @@ namespace ParkLookup.Controllers
     public ParksController(ParkLookupContext db)
     {
       _db = db;
+    }
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Park>> GetPark(int id)
+    {
+        var park = await _db.Parks.FindAsync(id);
+
+        if (park == null)
+        {
+            return NotFound();
+        }
+
+        return park;
     }
 
     [HttpGet]
@@ -50,28 +62,6 @@ namespace ParkLookup.Controllers
     }
 
 
-    [HttpPost]
-    public async Task<ActionResult<Park>> Post(Park park)
-    {
-      _db.Parks.Add(park);
-      await _db.SaveChangesAsync();
-
-      return CreatedAtAction(nameof(GetPark), new { id = park.ParkId }, park);
-    }
-
-    [HttpGet("{id}")]
-    public async Task<ActionResult<Park>> GetPark(int id)
-    {
-        var park = await _db.Parks.FindAsync(id);
-
-        if (park == null)
-        {
-            return NotFound();
-        }
-
-        return park;
-    }
-
     [HttpPut("{id}")]
     public async Task<IActionResult> Put(int id, Park park)
     {
@@ -101,9 +91,13 @@ namespace ParkLookup.Controllers
       return NoContent();
     }
 
-    private bool ParkExists(int id)
+    [HttpPost]
+    public async Task<ActionResult<Park>> Post(Park park)
     {
-      return _db.Parks.Any(e => e.ParkId == id);
+      _db.Parks.Add(park);
+      await _db.SaveChangesAsync();
+
+      return CreatedAtAction(nameof(GetPark), new { id = park.ParkId }, park);
     }
 
     [HttpDelete("{id}")]
@@ -119,6 +113,11 @@ namespace ParkLookup.Controllers
       await _db.SaveChangesAsync();
 
       return NoContent();
+    }
+
+    private bool ParkExists(int id)
+    {
+      return _db.Parks.Any(e => e.ParkId == id);
     }
   }
 }
