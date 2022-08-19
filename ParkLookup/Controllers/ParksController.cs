@@ -20,6 +20,19 @@ namespace ParkLookup.Controllers
       _db = db;
     }
 
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Park>> GetPark(int id)
+    {
+        var park = await _db.Parks.FindAsync(id);
+
+        if (park == null)
+        {
+            return NotFound();
+        }
+
+        return park;
+    }
+
     [HttpGet]
     public async Task<List<Park>> Get(string name, string type, string location, string feature)
     {
@@ -48,28 +61,6 @@ namespace ParkLookup.Controllers
       return await query.ToListAsync();
     }
 
-
-    [HttpPost]
-    public async Task<ActionResult<Park>> Post(Park park)
-    {
-      _db.Parks.Add(park);
-      await _db.SaveChangesAsync();
-
-      return CreatedAtAction(nameof(GetPark), new { id = park.ParkId }, park);
-    }
-
-    [HttpGet("{id}")]
-    public async Task<ActionResult<Park>> GetPark(int id)
-    {
-        var park = await _db.Parks.FindAsync(id);
-
-        if (park == null)
-        {
-            return NotFound();
-        }
-
-        return park;
-    }
 
     [HttpPut("{id}")]
     public async Task<IActionResult> Put(int id, Park park)
@@ -100,9 +91,13 @@ namespace ParkLookup.Controllers
       return NoContent();
     }
 
-    private bool ParkExists(int id)
+    [HttpPost]
+    public async Task<ActionResult<Park>> Post(Park park)
     {
-      return _db.Parks.Any(e => e.ParkId == id);
+      _db.Parks.Add(park);
+      await _db.SaveChangesAsync();
+
+      return CreatedAtAction(nameof(GetPark), new { id = park.ParkId }, park);
     }
 
     [HttpDelete("{id}")]
@@ -118,6 +113,11 @@ namespace ParkLookup.Controllers
       await _db.SaveChangesAsync();
 
       return NoContent();
+    }
+
+    private bool ParkExists(int id)
+    {
+      return _db.Parks.Any(e => e.ParkId == id);
     }
   }
 }
