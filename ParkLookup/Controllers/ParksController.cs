@@ -21,10 +21,33 @@ namespace ParkLookup.Controllers
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Park>>> Get()
+    public async Task<List<Park>> Get(string name, string type, string location, string feature)
     {
-      return await _db.Parks.ToListAsync();
+      IQueryable<Park> query = _db.Parks.AsQueryable();
+
+      if (name != null)
+      {
+        query = query.Where(entry => entry.Name == name);
+      }
+
+      if (type != null)
+      {
+        query = query.Where(entry => entry.Type == type);
+      }
+
+      if (location != null)
+      {
+        query = query.Where(entry => entry.Location == location);
+      }
+
+      if (feature != null)
+      {
+        query = query.Where(entry => entry.Feature == feature);
+      }
+
+      return await query.ToListAsync();
     }
+
 
     [HttpPost]
     public async Task<ActionResult<Park>> Post(Park park)
