@@ -30,7 +30,7 @@ namespace ParkLookup.Controllers
             return NotFound();
         }
 
-        return park;
+      return CreatedAtAction(nameof(GetPark), new { id = park.ParkId }, park);
     }
 
     [HttpGet]
@@ -63,7 +63,7 @@ namespace ParkLookup.Controllers
 
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Put(int id, Park park)
+    public async Task<IActionResult> PutPark(int id, Park park)
     {
       if (id != park.ParkId)
       {
@@ -92,12 +92,12 @@ namespace ParkLookup.Controllers
     }
 
     [HttpPost]
-    public async Task<ActionResult<Park>> Post(Park park)
+    public async Task<ActionResult<Park>> PostPark(Park park)
     {
       _db.Parks.Add(park);
       await _db.SaveChangesAsync();
 
-      return CreatedAtAction(nameof(GetPark), new { id = park.ParkId }, park);
+      return CreatedAtAction("GetPark", new { id = park.ParkId }, park);
     }
 
     [HttpDelete("{id}")]

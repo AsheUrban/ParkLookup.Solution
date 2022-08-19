@@ -4,7 +4,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models; //add for swagger documentation
+using System;   //Add for swagger documentation
+using System.Reflection; //add for swagger documentation
 using ParkLookup.Models;
+using System.IO; //Adds definition for path, use to ad swagger documentation
 
 namespace ParkLookup
 {
@@ -24,7 +28,29 @@ namespace ParkLookup
             services.AddDbContext<ParkLookupContext>(opt =>
                 opt.UseMySql(Configuration["ConnectionStrings:DefaultConnection"], ServerVersion.AutoDetect(Configuration["ConnectionStrings:DefaultConnection"])));
             services.AddControllers();
+            services.AddSwaggerGen(options => 
+            {
+                options.SwaggerDoc("v1", new OpenApiInfo 
+                {
+                 Version = "v1",
+                    Title = "ParkLookup Api",
+                    Description = "An ASP.NET Core Web API for displaying facts about State and National Parks around the Pacific Northwest",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Ashe Urban",
+                        Url = new Uri("https://github.com/AsheUrban")
+                    },
+                    License = new OpenApiLicense
+                    {
+                        Name = "MIT License",
+                        Url = new Uri("https://github.com/AsheUrban/ParkLookup.Solution/blob/Swagger/LICENSE")
+                    }  
+                });
+                var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+            });
         }
+      
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -43,6 +69,13 @@ namespace ParkLookup
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            app.UseSwagger();
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+                options.RoutePrefix = string.Empty;
             });
         }
     }
