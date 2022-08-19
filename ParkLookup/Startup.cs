@@ -1,17 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models; //add for swagger documentation
+using System;   //Add for swagger documentation
+using System.Reflection; //add for swagger documentation
 using ParkLookup.Models;
+using System.IO; //Adds definition for path, use to ad swagger documentation
 
 namespace ParkLookup
 {
@@ -46,7 +43,7 @@ namespace ParkLookup
                     License = new OpenApiLicense
                     {
                         Name = "MIT License",
-                        Url = new Uri("https://github.com/lcmpbll/Cretaceous22Park.Solution/blob/main/LICENSE")
+                        Url = new Uri("https://github.com/AsheUrban/ParkLookup.Solution/blob/Swagger/LICENSE")
                     }  
                 });
                 var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
@@ -61,8 +58,6 @@ namespace ParkLookup
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ParkLookup v1"));
             }
 
             // app.UseHttpsRedirection();
@@ -74,6 +69,13 @@ namespace ParkLookup
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            app.UseSwagger();
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+                options.RoutePrefix = string.Empty;
             });
         }
     }
