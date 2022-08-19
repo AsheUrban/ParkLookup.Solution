@@ -4,11 +4,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models; //add for swagger documentation
-using System;   //Add for swagger documentation
-using System.Reflection; //add for swagger documentation
+using Microsoft.OpenApi.Models; 
+using System; 
+using System.Reflection; 
 using ParkLookup.Models;
-using System.IO; //Adds definition for path, use to ad swagger documentation
+using System.IO; 
 
 namespace ParkLookup
 {
@@ -21,7 +21,6 @@ namespace ParkLookup
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
 
@@ -51,16 +50,12 @@ namespace ParkLookup
             });
         }
       
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            // app.UseHttpsRedirection();
 
             app.UseRouting();
 
