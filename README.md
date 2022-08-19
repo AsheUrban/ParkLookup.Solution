@@ -7,8 +7,6 @@
 ## Technologies Used
 
 * _C#_
-* _CSHTML_
-* _CSS_
 * _Entity Framework_
 * _SQL Database_
 * _dotnet_
@@ -34,9 +32,15 @@ _This API includes data on the following properties:_
 
 _For best results querying one property at a time, will return best results. If evaluating for two or more properties it is reccommended that two or more api calls are made and results appended together._
 
-## Link to Git Hub Repository
+## Notes:
+
+_This api includes full CRUD functionality and includes existing data migrations._
+
+## Link to Git Hub Repository & Lesson Details
 
 https://github.com/AsheUrban/ParkLookup.Solution
+
+https://epicenter.epicodus.com/courses/968/code_reviews/5865
 
 ### Naming Conventions
 
